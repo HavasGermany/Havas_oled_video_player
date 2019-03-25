@@ -54,17 +54,21 @@ Rename your video to “myMovie.mp4”,
 
 
 Single Step Export: 
+
 Quicker process, but less control on the final output
+
 $ ffmpeg -i myMovie.mp4 -r 15 -vf scale=128:64 ffmpeg_xbm/myMovie$filename%01d.xbm
 
 
 
 3 steps Export: 
+
 This give you a more control on your final output for true two color threshold bitmap
 
-Step one: Convert to Jpeg with a frame rate of 15fps
-:
+Step one: Convert to Jpeg with a frame rate of 15fps:
+
 $ ffmpeg -i myMovie.mp4 -r 15 -vf scale=128:64 jpg_output/myMovie_$filename%01d.jpg
+
 
 Step two: Convert to 1-bit array Bitmap:
 
@@ -81,6 +85,7 @@ Run the final command to append all the .xbm files into one single .h file, do n
 If you followed the 1 step process use the method below:
 
 $ cat ffmpeg_xbm/myMovie{1..[#here]}.xbm > myMovie.h
+
 - Reverse frame order
 $ cat ffmpeg_xbm/myMovie{[#here]..1}.xbm > myMovie.h
 
