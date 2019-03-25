@@ -1,0 +1,250 @@
+{\rtf1\ansi\ansicpg1252\cocoartf1561\cocoasubrtf600
+{\fonttbl\f0\fnil\fcharset0 HelveticaNeue;}
+{\colortbl;\red255\green255\blue255;\red27\green31\blue34;\red255\green255\blue255;\red0\green0\blue0;
+}
+{\*\expandedcolortbl;;\cssrgb\c14118\c16078\c18039;\cssrgb\c100000\c100000\c100000;\cssrgb\c0\c0\c0;
+}
+{\*\listtable{\list\listtemplateid1\listhybrid{\listlevel\levelnfc23\levelnfcn23\leveljc0\leveljcn0\levelfollow0\levelstartat1\levelspace360\levelindent0{\*\levelmarker \{disc\}}{\leveltext\leveltemplateid1\'01\uc0\u8226 ;}{\levelnumbers;}\fi-360\li720\lin720 }{\listname ;}\listid1}}
+{\*\listoverridetable{\listoverride\listid1\listoverridecount0\ls1}}
+\paperw11900\paperh16840\margl1440\margr1440\vieww23140\viewh41480\viewkind0
+\deftab720
+\pard\pardeftab720\sl440\sa320\partightenfactor0
+
+\f0\b\fs28 \cf2 \cb3 \expnd0\expndtw0\kerning0
+About\
+\pard\tx566\tx1133\tx1700\tx2267\tx2834\tx3401\tx3968\tx4535\tx5102\tx5669\tx6236\tx6803\pardeftab720\pardirnatural\partightenfactor0
+
+\b0 \cf0 \cb1 \kerning1\expnd0\expndtw0 This repository contains a simple method to convert your video files to the 1-bit Bitmap format needed by arduino. You will find an example code to create your own video player.\
+This tutorial assumes you have previous experience with Arduino and command line and have everything already setup.\
+\
+ \
+\pard\tx566\pardeftab720\sl360\partightenfactor0
+
+\b \cf0 Main library\
+
+\b0 This entire project would not have been possible without the amazing U8G2 library from Oli Kraus. https://github.com/olikraus/u8g2/\
+You will also need the Esp8266 or Esp32 hardware setup \
+\
+\pard\tx566\tx1133\tx1700\tx2267\tx2834\tx3401\tx3968\tx4535\tx5102\tx5669\tx6236\tx6803\pardeftab720\pardirnatural\partightenfactor0
+
+\b \cf0 Required Hardware:\
+
+\b0 \
+\'95 A Wemos d1-Mini was used for this tutorial but any controller based on the Esp8266 chip will work, the example will also run on an Esp32..\
+\'95 An Oled display (Model: SSD1306 i2C)\
+\'95 A Pushbutton \
+\'95 A few jumper male/female cables\
+\'95\
+\pard\pardeftab720\sl360\sa320\partightenfactor0
+
+\b \cf2 \cb3 \expnd0\expndtw0\kerning0
+Required Softwares:\
+\pard\tx220\tx720\pardeftab720\li720\fi-720\sl360\partightenfactor0
+\ls1\ilvl0
+\b0 \cf2 \cb3 \kerning1\expnd0\expndtw0 {\listtext	\uc0\u8226 	}Arduino\
+{\listtext	\uc0\u8226 	}Terminal or editor of your choice\
+{\listtext	\uc0\u8226 	}Atom (please download and install the sequential Number package: https://atom.io/packages/sequential-number)\
+{\listtext	\uc0\u8226 	}\expnd0\expndtw0\kerning0
+imagemagick (https://www.imagemagick.org/ \cb1 \
+\ls1\ilvl0\cb3 \kerning1\expnd0\expndtw0 {\listtext	\uc0\u8226 	}\expnd0\expndtw0\kerning0
+Ffmpeg\
+\ls1\ilvl0\kerning1\expnd0\expndtw0 {\listtext	\uc0\u8226 	}XNconvert if you want to preview your XBM files (https://www.xnview.com/en/xnconvert/)\
+\pard\tx220\tx720\pardeftab720\li720\fi-720\sl360\partightenfactor0
+\ls1\ilvl0\cf2 \cb1 {\listtext	\uc0\u8226 	}Image editor of your choice (Adobe Photoshop, Gimp)\
+{\listtext	\uc0\u8226 	}Video editor of your choice (After effects, iMovie)\expnd0\expndtw0\kerning0
+\
+\pard\tx566\pardeftab720\sl360\partightenfactor0
+\cf2 \
+\pard\tx566\pardeftab720\sl360\partightenfactor0
+\cf2 \
+Please install ImageMagick and \cb3 FFMPEG.\
+\cb1 \
+\pard\tx220\tx720\pardeftab720\li720\fi-720\sl360\partightenfactor0
+\cf2 \cb3 https://www.imagemagick.org/ \
+- easy install if you have Brew (https://brew.sh/) installed - -$ brew install imagemagick\
+\
+https://ffmpeg.org/\cf2 \cb1 \
+\cf2 \cb3 - easy install if you have Brew (https://brew.sh/) installed - -$ brew install ffmpeg\
+\pard\tx220\tx720\pardeftab720\li720\fi-720\sl360\partightenfactor0
+\cf2 \cb1 \
+Once you have both platforms installed and running, you can now proceed with this tutorial.\
+\
+Open the Folder \'93video_animator\'94 inside of \'93HAVAS_ANIMATOR\'94. Inside of it, you will find 3 empty folders and 2 video files.\
+Open your Terminal of choice and navigate to the \'93video_animator\'94 folder\
+\
+Rename your video to \'93myMovie.mp4\'94,\
+(I recommend a video no longer than 20 sec for better results, but this is up to you and your hardware)\
+\
+\pard\tx220\tx720\pardeftab720\li720\fi-720\sl360\partightenfactor0
+\cf4 \cb3 \
+\pard\pardeftab720\sl300\partightenfactor0
+
+\b \cf4 \cb3 Single Step Export: \
+
+\b0 Quicker process, but less control on the final output\
+$ ffmpeg -i myMovie.mp4 -r 15 -vf scale=128:64 ffmpeg_xbm/myMovie$filename%01d.xbm\
+\
+\
+\
+
+\b 3 steps Export: \
+
+\b0 This give you a more control on your final output for true two color threshold bitmap\
+\
+
+\b Step one: Convert to Jpeg with a frame rate of 15fps\
+:\
+
+\b0 $ ffmpeg -i myMovie.mp4 -r 15 -vf scale=128:64 jpg_output/myMovie_$filename%01d.jpg\
+\
+
+\b Step two: Convert to 1-bit array Bitmap:\
+
+\b0 \
+$ convert jpg_output/myMovie*.jpg -depth 1 -threshold 50% BMP3:bmp_output/myMovie_.bmp\
+\
+
+\b Step Three: Convert to XBM:\
+
+\b0 \
+$ convert bmp_output/myMovie_-*.bmp -depth 1 -threshold 50% BMP3: xbm_output/myMovie_.xbm\
+\
+Take note of the number of files contained in the folder.\
+\
+Run the final command to append all the .xbm files into one single .h file, do not forget to add the number you wrote down in the [#here]\
+\
+If you followed the 1 step process use the method below:\
+\
+$ cat ffmpeg_xbm/myMovie\{1..[#here]\}.xbm > myMovie.h\
+- Reverse frame order\
+$ cat ffmpeg_xbm/myMovie\{[#here]..1\}.xbm > myMovie.h\
+\
+\
+$ cat ffmpeg_xbm/myMovie\{1..98\}.xbm > myMovie.h\
+\
+For the 3 steps process:\
+ \
+$ cat xbm_output/myMovie\{1..[#here]\}.xbm > myMovie.h\
+- Reverse frame order\
+$ cat xbm_output/myMovie\{[#here]..1\}.xbm > myMovie.h\
+\
+\
+$ cat xbm_output/myMovie\{1..96\}.xbm > myMovie.h\
+\
+\
+You should now see a movie.h file in your main directory.\
+\
+ \
+Open it with Atom (don\'92t forget to install\cf4 \cb3 \kerning1\expnd0\expndtw0  the sequential Number package: https://atom.io/packages/sequential-number)\
+\
+\
+\pard\pardeftab720\sl300\partightenfactor0
+
+\b \cf4 Step 1: clear all the #define parameters.\
+
+\b0 \
+Copy the top two #define\
+#define image_width 128\
+#define image_height 64\
+\
+Press cmd + F\
+\
+paste it into the find area, select \'93Find All\'94\
+Make sure the \'93replace in current buffer\'94 is empty\
+\
+Press \'93Replace All\'94\
+\
+This will delete all these parameters\
+\
+\
+
+\b Step 2: Rename image_bits to myMoviebits\
+
+\b0 \
+Press cmd + F \
+Search for \'93image_bits\'94 follow the previous process to find all copies of it, \
+And replace all by \'93myMoviebits_-\'93 \
+[name_rename.gif]\
+Once all have been changed, \
+\
+Repeat the first step and search for \'93-\'94, find,\
+[sequential_number_a.gif]\
+Once you have them all selected, open the Packages Tab and scroll down to \'93Sequential Number\'94, press it.\
+Write \'930\'94 in the input field, this will replace all \'93-\'94 with numbers starting from 0.\
+\
+Paste this code snippet at the bottom of your page:\
+\
+ const uint8_t * myMovie[] = \{\
+\
+\
+ \};\
+\
+\
+
+\b Step 3: prepare XBM array\
+
+\b0 Create a new document and paste \'93myMoviebits_-, \'93  in it.\
+Repeat this process until you have the number of files needed in the myMovie.h file.\
+\
+By pressing \'93cmd + F\'94 you will be able to see how many duplicates you have,\
+Once you have the correct number,\
+search for \'93-\'94, find, press \'93Select All\'94\
+ \
+\
+Once you have them all selected, \
+open the Packages Tab and scroll down to \'93Sequential Number\'94, press it.\
+Write \'930\'94 in the input field, this will replace all \'93-\'94 with numbers starting from 0.\
+\
+\
+You are almost done, \
+\
+copy every values from your current document and paste them into the \'93const uint8_t \'85\{here\}; block\'94.\
+Your final code will look like this \
+ \
+\
+ const uint8_t * myMovie[] = \{\
+\
+   myMoviebits_0,myMoviebits_1,myMoviebits_2,myMoviebits_3,myMoviebits_4,myMoviebits_5,myMoviebits_6,myMoviebits_7,myMoviebits_8,myMoviebits_9,\
+   myMoviebits_10,myMoviebits_11,myMoviebits_12,myMoviebits_13,myMoviebits_14,myMoviebits_15,myMoviebits_16,myMoviebits_17,myMoviebits_18,myMoviebits_19,\
+   myMoviebits_20,\'85\'85\'85\'85\'85\'85. \
+\
+ \};\
+\
+
+\b Step 3: Replace Static unsigned char\
+
+\b0 \
+Repeat the previous step but instead search for \'93static unsigned char \'94, find all and replace all with \'93static const unsigned char PROGMEM \'94\
+\
+
+\b Step 4: Define the movie parameters\
+
+\b0 \
+\
+You can now paste this to the top of the page, don\'92t forget to add the number of frames you have\
+#define myMoviebits_frames [your frame number]\
+#define myMoviebits_begin 0\
+#define myMoviebits_end  [your frame number]\
+\
+Make sure to have the right number or your ESP8266 will reboot itself\
+\
+\
+You are now done. \
+\
+Copy the file myMovie.h file and paste it into the havas_animator folder.\
+\
+And open the file havas_animator.ino.\
+The tab myMovie.h should be now located in the upper side of your Arduino sketch window,\
+\
+Compile your code.\
+\
+ if it doesn\'92t compile, check if you have the correct number of XBM at the bottom of the \'93myMovie.h\'94 file,\
+Also if you do not have enough space, you may run into some issues.\
+\
+If it compiles, you are done, \
+\pard\pardeftab720\sl300\partightenfactor0
+\cf4 \cb3 \expnd0\expndtw0\kerning0
+\
+You can now enjoy your first animations, \
+It is now your turn to make things, just do not forget to tag your project \'93#havasgermany, @havasgermany\'94 if you post it on Instagram or any other social.\
+}
