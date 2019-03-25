@@ -10,18 +10,29 @@ You will also need the Esp8266 or Esp32 hardware setup
 Required Hardware:
 
 • A Wemos d1-Mini was used for this tutorial but any controller based on the Esp8266 chip will work, the example will also run on an Esp32..
+
 • An Oled display (Model: SSD1306 i2C)
+
 • A Pushbutton 
+
 • A few jumper male/female cables
-•
+
+
 Required Softwares:
 	•	Arduino
+
 	•	Terminal or editor of your choice
+
 	•	Atom (please download and install the sequential Number package: https://atom.io/packages/sequential-number)
+
 	•	imagemagick (https://www.imagemagick.org/ 
+
 	•	Ffmpeg
+
 	•	XNconvert if you want to preview your XBM files (https://www.xnview.com/en/xnconvert/)
+
 	•	Image editor of your choice (Adobe Photoshop, Gimp)
+
 	•	Video editor of your choice (After effects, iMovie)
 
 
